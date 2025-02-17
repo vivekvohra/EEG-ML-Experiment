@@ -1,0 +1,99 @@
+# 4. Model Definition 
+
+from sklearn.utils.class_weight import compute_class_weight
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.constraints import max_norm
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, BatchNormalization
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.layers import DepthwiseConv2D, Multiply, Add, GlobalAveragePooling2D
+from tensorflow.keras.regularizers import l1_l2
+from tensorflow.keras.layers import SpatialDropout2D  # Add to your imports
+
+from tensorflow.keras.layers import (
+    Input, Conv2D, DepthwiseConv2D,  # Explicit Conv2D import
+    BatchNormalization, MaxPooling2D,
+    Flatten, Dense, Dropout, Multiply,
+    GlobalAveragePooling2D
+)
+
+
+def create_model(input_shape, nb_classes):
+    inputs = Input(shape=input_shape)
+    
+    # 1. Depthwise Separable Convolution
+    x = DepthwiseConv2D((3, 3), depth_multiplier=2, activation='relu', padding='same')(inputs)
+    x = Conv2D(32, (1, 1), activation='relu')(x)  # Pointwise convolution
+    x = BatchNormalization()(x)
+    
+    # 2. Frequency-Specific Processing
+    x = Conv2D(64, (1, 5), activation='relu', padding='same',  # Kernel spans all channels
+               kernel_regularizer=l1_l2(l1=1e-5, l2=1e-4))(x)  # Frequency-axis kernel
+    
+    # 3. Channel Attention (Squeeze-and-Excite Lite)
+    squeeze = GlobalAveragePooling2D()(x)
+    excitation = Dense(64//4, activation='relu')(squeeze)
+    excitation = Dense(64, activation='sigmoid')(excitation)
+    x = Multiply()([x, excitation])
+    
+    # 4. Adaptive Pooling
+    x = MaxPooling2D((2, 2))(x)
+    x = SpatialDropout2D(0.3)(x)  # Better than Dropout for spatial data
+    
+    # 5. Frequency Band Consolidation
+    x = Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+    x = BatchNormalization()(x)
+    
+    # 6. Regularized Classification Head
+    x = Flatten()(x)
+    x = Dense(64, activation='relu', kernel_constraint=max_norm(3.))(x)
+    x = Dropout(0.5)(x)
+    outputs = Dense(nb_classes, activation='softmax')(x)
+    
+    return Model(inputs, outputs)
+
+
+# 5. Model Training 
+
+# Get input dimensions
+input_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3])  # (channels, freq_bands, 1)
+nb_classes = len(np.unique(y))
+
+# Create and compile model
+model = create_model(input_shape, nb_classes)
+
+model.compile(
+    optimizer=Adam(learning_rate=0.001),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Class weights for imbalance
+class_weights = compute_class_weight('balanced', classes=np.unique(y_train), y=y_train)
+class_weights = dict(enumerate(class_weights))
+
+# Callbacks
+callbacks = [
+    EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True),
+    ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=7, min_lr=1e-6)
+]
+
+# Train model
+history = model.fit(
+    X_train, y_train,
+    validation_data=(X_test, y_test),
+    epochs=100,
+    batch_size=32,
+    class_weight=class_weights,
+    callbacks=callbacks,
+    verbose=1
+)
+
+
+# Evaluate on test set
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print(f"\nTest Accuracy: {test_acc:.2%}")
+print(f"Test Loss: {test_loss:.4f}")
+
+# Save model
+model.save('alzheimer_eeg_model')
