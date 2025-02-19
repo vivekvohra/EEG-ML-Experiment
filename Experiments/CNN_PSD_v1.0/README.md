@@ -34,20 +34,17 @@ The deep learning model is inspired by established CNN-based approaches and arch
 
 ## Citations
 
-- **Sangmandu, 2021:**  
-  The CNN implementation and performance enhancement techniques in this project are inspired by:  
-  ```
-  @misc{sangmandu2021cnn,
-      author = {Sangmandu},
-      title = {CNN 모델 구현 및 성능 향상 기본 기법 적용하기},
-      year = {2021},
-      url = {https://sangmandu.gitbook.io/til/til_ml/cnn-fundamental/5}
-  }
-  ```
 - **DICE‑Net:**  
   The model architecture also draws on ideas from the DICE‑Net paper:  
   *DICE‑Net: A Novel Convolution-Transformer Architecture for Alzheimer Detection in EEG Signals.*
 
+- **OpenNeuro (2020):**
+  Alzheimer's EEG Dataset [Dataset]. Available at: [openneuro datasets](https://doi.org/10.18112/openneuro.ds004504.v1.0.8) .
+
+- **Sangmandu (2021):**
+   'CNN 모델 구현 및 성능 향상 기본 기법 적용하기'.Available at: [sangmandu gitbook](https://sangmandu.gitbook.io/til/til_ml/cnn-fundamental/5) .
+
+  
 ---
 
 ## Final Notes
