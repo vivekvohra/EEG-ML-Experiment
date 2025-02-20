@@ -8,6 +8,11 @@ Welcome to the EEG-ML-Experiment repository! This repository is dedicated to exp
 
 This repository contains multiple experimental models, each implemented in its own subdirectory along with a dedicated README file. The main focus is on leveraging EEG data—specifically, features extracted from power spectral density (PSD) and relative band power—for diagnostic purposes. This work is part of my ongoing research efforts, and while the models are still in development and experimental in nature, they represent a significant learning experience in applying machine learning to biomedical signals.
 
+## Related Blog Post
+
+I wrote a blog post detailing the above.  
+Read the full post here: [Detecting Alzheimer’s with EEG and Deep Learning – Part 1](https://dev.to/vivekvohra/part-1-detecting-alzheimers-with-eeg-and-deep-learning-theory-motivation-and-preprocessing-1hd1))
+
 ---
 
 ## Repository Structure
