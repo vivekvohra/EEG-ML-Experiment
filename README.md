@@ -11,7 +11,10 @@ This repository contains multiple experimental models, each implemented in its o
 ## Related Blog Post
 
 I wrote a blog post detailing the above.  
-Read the full post here: [Detecting Alzheimer’s with EEG and Deep Learning – Part 1](https://dev.to/vivekvohra/part-1-detecting-alzheimers-with-eeg-and-deep-learning-theory-motivation-and-preprocessing-1hd1))
+Read the full post here: [Detecting Alzheimer’s with EEG and Deep Learning – Part 1](https://dev.to/vivekvohra/part-1-detecting-alzheimers-with-eeg-and-deep-learning-theory-motivation-and-preprocessing-1hd1)
+
+Post for 2nd model:[Detecting Alzheimer’s Disease using a CNN-BiLSTM Architecture](https://dev.to/vivekvohra/detecting-alzheimers-disease-with-eeg-and-deep-learning-3ifh)
+
 
 ---
 
@@ -33,6 +36,11 @@ EEG-ML-Experiment/
     │   └── README.md        # Detailed description for this model
     │    └── EEG_Exploration.ipynb              # Jupyter notebook
     │
+    ├── EEG_CNN-BiLSTM     
+    │   ├── conference.pdf    # Conference Submission (ICDSINC 2025)     
+    │   └── adsa.ipynb        # Jupyter notebook
+    │         
+    │
     └── Other_Model/         
         ├── model.py
         ├── train.py
@@ -40,36 +48,6 @@ EEG-ML-Experiment/
 ```
 
 Each experimental model has its own folder under the `experiments/` directory. Every folder includes code files and a README that explains the approach, design choices, and results specific to that model.
-
----
-
-## Getting Started
-
-### Prerequisites
-Before you begin, ensure you have the following installed:
-- Python 3.8 or later
-- pip
-- Git
-- A GPU-enabled setup is recommended for training deep learning models (optional)
-
-### Installation
-
-1. **Clone the Repository:**
-
-   ```bash
-   git clone https://github.com/your-username/EEG-ML-Experiment.git
-   cd EEG-ML-Experiment
-   ```
-
-2. **Install Dependencies:**
-
-   All necessary packages are listed in `requirements.txt`. To install them, run:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   This should install packages such as `mne`, `tensorflow`, `scikit-learn`, and others required for data preprocessing and model training.
 
 ---
 
